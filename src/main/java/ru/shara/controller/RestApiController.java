@@ -5,9 +5,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import ru.shara.model.User;
+import ru.shara.model.UserRoleEnum;
 import ru.shara.service.UserService;
 
 import javax.validation.Valid;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -23,57 +25,65 @@ public class RestApiController {
         this.encoder = encoder;
     }
 
-    @GetMapping("test")
-    public String test() {
-        return "{greeting: 'Hello}";
-    }
-
-
-    @GetMapping("users")
-    public List<User> getAllUsers() {
-        return userService.getAll();
-    }
-
-    @PostMapping("users")
+    @PutMapping("new-user")
     public User createUser(@Valid @RequestBody User user) {
         userService.save(user);
         return user;
     }
 
-    @GetMapping("users/id/{id}")
+    @GetMapping("all-users")
+    public List<User> getAllUsers() {
+        return userService.listAll();
+    }
+
+    @GetMapping("roles")
+    public List<UserRoleEnum> getAllRoles() {
+        return Arrays.asList(UserRoleEnum.values());
+    }
+
+
+    @GetMapping("user/id/{id}")
     public ResponseEntity<User> getUserById(@PathVariable(value = "id") Long id) {
-        User user =  userService.getById(id);
-        if(user == null) return ResponseEntity.notFound().build();
-
+        User user = userService.get(id);
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
         return ResponseEntity.ok().body(user);
     }
 
-    @GetMapping("users/name/{name}")
-    public ResponseEntity<User> getUserByUsername(@PathVariable(value = "name") String name) {
-        User user =  userService.getUserByName(name);
-        if(user == null) return ResponseEntity.notFound().build();
-
+    @GetMapping("user/name/{name}")
+    public ResponseEntity<User> getUserById(@PathVariable(value = "name") String name) {
+        User user = userService.getUserByName(name);
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
         return ResponseEntity.ok().body(user);
     }
 
-    @PutMapping("users/id/{id}")
+
+    @PutMapping("user/id/{id}")
     public ResponseEntity<User> updateUser(@PathVariable(value = "id") Long id, @Valid @RequestBody User userData) {
-        User user = userService.getById(id);
-        if(user == null) return ResponseEntity.notFound().build();
+        User user = userService.get(id);
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+        user.setName(userData.getName());
+        user.setAuthorities(userData.getRoles());
+        user.setEmail(userData.getEmail());
+        user.setAddress(userData.getAddress());
 
-        user.setUsername(userData.getUsername());
-        user.setRoles(userData.getRoles());
         if (userData.getPassword() != null && !userData.getPassword().equals("") && !userData.getPassword().equals(" ")) {
             user.setPassword(encoder.encode(userData.getPassword()));
         }
+
         userService.save(user);
         return ResponseEntity.ok().body(user);
     }
 
-    @DeleteMapping("users/id/{id}")
+    @DeleteMapping("user/id/{id}")
     public ResponseEntity<User> deleteUser(@PathVariable(value = "id") Long id) {
-        User user = userService.getById(id);
-        if(user == null) {
+        User user = userService.get(id);
+        if (user == null) {
             return ResponseEntity.notFound().build();
         }
         userService.delete(id);

@@ -19,9 +19,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private AuthenticationEntryPoint authEntryPoint;
 
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() { return new BCryptPasswordEncoder();}
-
     @Bean("authenticationManager")
     @Override
     public AuthenticationManager authenticationManager() throws Exception {

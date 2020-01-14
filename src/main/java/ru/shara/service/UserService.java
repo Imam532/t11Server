@@ -19,40 +19,54 @@ import java.util.List;
 @EnableTransactionManagement(proxyTargetClass = true)
 public class UserService implements UserDetailsService {
 
-    private UserRepository repository;
-
     @Autowired
-    public UserService(UserRepository repository) {
-        this.repository = repository;
+    UserRepository repo;
+
+    public void save(User user) {
+        repo.save(user);
     }
 
-    public List<User> getAll() {
-        return repository.findAll();
+    public void saveIfNotExists(User user) {
+        if (repo.getUserByName(user.getName()) == null) {
+            repo.save(user);
+        }
     }
 
-    public User getById(Long id) {
-        return repository.findById(id).get();
+    public List<User> listAll() {
+        return repo.findAll();
     }
 
-    public  User getUserByName(String name) {
-        return  repository.findUsersByUsername(name).get(0);
+    public User get(Long id) {
+        return repo.findById(id).get();
+    }
+
+    public User getUserByName(String name) {
+        return repo.getUserByName(name);
     }
 
     public void delete(Long id) {
-        repository.deleteById(id);
+        repo.deleteById(id);
+    }
+
+    public List<User> search(String keyword) {
+        return repo.search(keyword);
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = getUserByName(username);
+    public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
 
-        if(user == null) {
-            throw new UsernameNotFoundException("User: " + username + " not found");
+        User user = getUserByName(name);
+
+        if (user == null) {
+            throw new UsernameNotFoundException("No user found with username: " + name);
         }
+
         return user;
     }
 
-    public void save(User user) {
-        repository.save(user);
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
+
 }
