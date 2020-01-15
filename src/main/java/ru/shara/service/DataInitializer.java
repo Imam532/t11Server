@@ -29,7 +29,7 @@ public class DataInitializer {
         admin.add(UserRoleEnum.USER);
         admin.add(UserRoleEnum.ADMIN);
 
-        userService.saveIfNotExists(new User("user", encoder.encode("user"), "email", "address", user));
-        userService.saveIfNotExists(new User("admin", encoder.encode("admin"), "email2", "address2", admin));
+//        userService.saveIfNotExists(new User("user", encoder.encode("user"), user));
+//        userService.saveIfNotExists(new User("admin", encoder.encode("admin"), admin));
     }
 }

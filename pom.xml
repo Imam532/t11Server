@@ -103,30 +103,6 @@
             <version>1.18.10</version>
             <scope>provided</scope>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>com.fasterxml.jackson.datatype</groupId>-->
-<!--            <artifactId>jackson-datatype-hibernate5</artifactId>-->
-<!--        </dependency>-->
-<!--        &lt;!&ndash; https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>io.jsonwebtoken</groupId>-->
-<!--            <artifactId>jjwt</artifactId>-->
-<!--            <version>0.9.1</version>-->
-<!--        </dependency>-->
-
-<!--        &lt;!&ndash; https://mvnrepository.com/artifact/com.auth0/auth0 &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>com.auth0</groupId>-->
-<!--            <artifactId>auth0</artifactId>-->
-<!--            <version>1.15.0</version>-->
-<!--        </dependency>-->
-
-<!--        &lt;!&ndash; https://mvnrepository.com/artifact/com.auth0/auth0-spring-security-api &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>com.auth0</groupId>-->
-<!--            <artifactId>auth0-spring-security-api</artifactId>-->
-<!--            <version>1.2.6</version>-->
-<!--        </dependency>-->
     </dependencies>
 
 </project>
